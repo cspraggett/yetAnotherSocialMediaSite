@@ -19,18 +19,17 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-//import Route from '@ioc:Adonis/Core/Auth'
 
 Route.post('login', async ({ auth, request, response }) => {
   const email = request.input('email')
   const password = request.input('password')
 
   try {
-    await auth.use('web').attempt(email, password, true)
+    await auth.use('web').attempt(email, password)
     response.send('all good!')
   } catch (err) {
     console.log(err)
-    return response.badRequest('Invalid credentials')
+    return response.badRequest(err)
   }
 })
 
