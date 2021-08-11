@@ -39,12 +39,12 @@ Route.post('/logout', async ({ auth, response }) => {
   return response.send('good bye')
 })
 
+Route.post('users', 'UsersController.store')
+
 Route.group(() => {
   Route.get('/', async () => {
     return { hello: 'world' }
   })
 
   Route.get('users', 'UsersController.index')
-
-  Route.post('users', 'UsersController.store')
 }).middleware('auth')
