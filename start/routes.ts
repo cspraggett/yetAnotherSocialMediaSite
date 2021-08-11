@@ -19,11 +19,32 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+//import Route from '@ioc:Adonis/Core/Auth'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
+Route.post('login', async ({ auth, request, response }) => {
+  const email = request.input('email')
+  const password = request.input('password')
+
+  try {
+    await auth.use('web').attempt(email, password, true)
+    response.send('all good!')
+  } catch (err) {
+    console.log(err)
+    return response.badRequest('Invalid credentials')
+  }
 })
 
-Route.get('users', 'UsersController.index')
+Route.post('/logout', async ({ auth, response }) => {
+  await auth.use('web').logout()
+  return response.send('good bye')
+})
 
-Route.post('users', 'UsersController.store')
+Route.group(() => {
+  Route.get('/', async () => {
+    return { hello: 'world' }
+  })
+
+  Route.get('users', 'UsersController.index')
+
+  Route.post('users', 'UsersController.store')
+}).middleware('auth')
