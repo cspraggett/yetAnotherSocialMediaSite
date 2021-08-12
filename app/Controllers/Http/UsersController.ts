@@ -24,15 +24,4 @@ export default class UsersController {
       response.badRequest(err.messages)
     }
   }
-
-  public async update({ request, response }: HttpContextContract) {
-    try {
-      const payload = await request.validate(UpdateUser)
-
-      const user = await User.findOrFail(request.id)
-      await user.merge(payload).save()
-    } catch (err) {
-      response.badRequest(err.messages)
-    }
-  }
 }
