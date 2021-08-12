@@ -7,7 +7,7 @@ export default class Friends extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('sender_id').unsigned().notNullable().references('id').inTable('users')
-      table.integer('reciver_id').unsigned().notNullable().references('id').inTable('users')
+      table.integer('receiver_id').unsigned().notNullable().references('id').inTable('users')
       table.integer('status').notNullable()
       table.string('message', 255).nullable()
       /**
