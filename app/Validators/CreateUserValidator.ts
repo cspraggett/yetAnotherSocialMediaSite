@@ -12,7 +12,10 @@ export default class CreateUserValidator {
     first_name: schema.string({ trim: true }),
     last_name: schema.string({ trim: true }),
     avatar_url: schema.string.optional(),
-    password: schema.string({ trim: false }),
+    password: schema.string({}, [
+      rules.confirmed(),
+      rules.regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/),
+    ]),
   })
 
   /**

@@ -3,9 +3,13 @@ import User from 'App/Models/User'
 import CreateUser from 'App/Validators/CreateUserValidator'
 
 export default class UsersController {
-  public async index(ctx: HttpContextContract) {
-    const user = await User.findBy('email', 'jdoe@gmail.com')
-    ctx.response.send(user)
+  public async show({ request, response, params }: HttpContextContract) {
+    try {
+      const user = await User.find(params.id)
+      response.send(user)
+    } catch (err) {
+      response.badRequest(err)
+    }
   }
 
   public async store({ request, response }: HttpContextContract) {
@@ -16,6 +20,17 @@ export default class UsersController {
 
       await user.fill(payload).save()
       response.send(user)
+    } catch (err) {
+      response.badRequest(err.messages)
+    }
+  }
+
+  public async update({ request, response }: HttpContextContract) {
+    try {
+      const payload = await request.validate(UpdateUser)
+
+      const user = await User.findOrFail(request.id)
+      await user.merge(payload).save()
     } catch (err) {
       response.badRequest(err.messages)
     }
