@@ -8,4 +8,6 @@ Route.group(() => {
   Route.post('logout', 'SessionsController.logout')
 
   Route.get('users/:id', 'UsersController.show')
+
+  Route.get('friend-request', 'FriendsController.store')
 }).middleware('auth')
